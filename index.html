@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>软瘾 · 听读主页 | 朱迪斯·莱特</title>
+<style>
+  :root{
+    --bg:#0f1115; --bg2:#161a21; --card:#1c2129; --line:#2a3038;
+    --txt:#e8eaf0; --sub:#9aa3b2; --acc:#e6b56a; --acc2:#7fc8c0; --hl:#2a3340;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    background:radial-gradient(1200px 600px at 70% -10%,#1d2530 0%,var(--bg) 55%);
+    color:var(--txt);min-height:100vh;line-height:1.6;padding:28px 16px 60px}
+  .wrap{max-width:860px;margin:0 auto}
+  header{text-align:center;margin-bottom:26px}
+  .kicker{letter-spacing:.32em;font-size:12px;color:var(--acc);text-transform:uppercase}
+  h1{font-size:34px;margin:8px 0 4px;font-weight:700;letter-spacing:2px}
+  .sub{color:var(--sub);font-size:14px}
+  .author{color:var(--acc2);font-size:13px;margin-top:6px}
+  .intro{background:var(--bg2);border:1px solid var(--line);border-radius:14px;
+    padding:16px 18px;color:var(--sub);font-size:13.5px;margin:18px 0 24px}
+  .intro b{color:var(--txt)}
+  .player{background:linear-gradient(160deg,#222a35,#171c24);border:1px solid var(--line);
+    border-radius:18px;padding:22px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;
+    position:sticky;top:14px;z-index:5;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+  .cover{width:96px;height:96px;border-radius:14px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--acc),#b9743a 60%,#6f4a8e);
+    display:flex;align-items:center;justify-content:center;font-size:40px;color:#1a1208;font-weight:800;
+    box-shadow:inset 0 0 30px rgba(255,255,255,.18)}
+  .pinfo{flex:1 1 240px;min-width:220px}
+  .ptitle{font-size:17px;font-weight:600;margin-bottom:2px}
+  .pstat{font-size:12px;color:var(--sub);margin-bottom:12px}
+  .bar{height:6px;background:#0c0f14;border-radius:6px;overflow:hidden;cursor:pointer;border:1px solid var(--line)}
+  .fill{height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .15s linear}
+  .time{display:flex;justify-content:space-between;font-size:11.5px;color:var(--sub);margin-top:6px}
+  .ctrls{display:flex;gap:12px;align-items:center;margin-top:14px}
+  button{font-family:inherit}
+  .btn{background:var(--hl);border:1px solid var(--line);color:var(--txt);border-radius:50%;
+    width:42px;height:42px;font-size:16px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
+  .btn:hover{border-color:var(--acc);color:var(--acc)}
+  .btn.play{width:54px;height:54px;background:var(--acc);color:#1a1208;border:none;font-size:20px}
+  .btn.play:hover{filter:brightness(1.08)}
+  .speed{margin-left:auto;background:transparent;border:1px solid var(--line);color:var(--sub);
+    border-radius:20px;padding:6px 12px;font-size:12px;cursor:pointer}
+  .speed:hover{color:var(--txt);border-color:var(--acc)}
+  ul.list{list-style:none;margin-top:24px}
+  li.ch{display:flex;align-items:center;gap:14px;padding:13px 14px;border:1px solid var(--line);
+    border-radius:12px;margin-bottom:10px;background:var(--card);cursor:pointer;transition:.18s}
+  li.ch:hover{border-color:var(--acc);transform:translateX(2px)}
+  li.ch.active{border-color:var(--acc);background:var(--hl)}
+  .idx{flex:0 0 34px;height:34px;border-radius:9px;background:#0c0f14;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--acc)}
+  li.ch.active .idx{background:var(--acc);color:#1a1208;border:none;font-weight:700}
+  .meta{flex:1;min-width:0}
+  .ct{font-size:14.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cd{font-size:11.5px;color:var(--sub);margin-top:2px}
+  .dur{flex:0 0 auto;font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+  .eq{display:none;gap:2px;align-items:flex-end;height:14px;margin-left:6px}
+  li.ch.playing .eq{display:flex}
+  .eq i{width:3px;background:var(--acc);border-radius:2px;animation:eq 1s infinite ease-in-out}
+  .eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}.eq i:nth-child(4){animation-delay:.6s}
+  @keyframes eq{0%,100%{height:4px}50%{height:14px}}
+  .total{text-align:center;color:var(--sub);font-size:12px;margin-top:18px}
+  footer{text-align:center;color:#6b7280;font-size:11.5px;margin-top:30px}
+  a{color:var(--acc2);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">AI 语音读书 · 听读主页</div>
+    <h1>软瘾</h1>
+    <div class="sub">终结那些窃取你时间、夺走你生活的强迫性习惯</div>
+    <div class="author">朱迪斯·莱特（Judith Wright）著 · 子言 播讲</div>
+  </header>
+
+  <div class="intro">
+    <b>关于本书：</b>软瘾，是那些看似无害、却悄悄偷走我们时间、金钱、亲密与满足感的日常习惯——无意识刷手机、狂购物、漫无目的看电视、拖延、情绪性进食……本书提出一套经过验证的「软瘾应对方案」：从做出核心决定、识别软瘾、破解密码，到满足精神需求、构建愿景、加减法行动、获得支持。这里有 13 段讲读，陪你一步步拿回生活的主动权。
+  </div>
+
+  <div class="player">
+    <div class="cover">软</div>
+    <div class="pinfo">
+      <div class="ptitle" id="pTitle">选择一个章节开始听读</div>
+      <div class="pstat" id="pStat">共 13 章 · 约 5.4 小时</div>
+      <div class="bar" id="bar"><div class="fill" id="fill"></div></div>
+      <div class="time"><span id="cur">00:00</span><span id="dur">00:00</span></div>
+      <div class="ctrls">
+        <button class="btn" id="prev" title="上一章">⏮</button>
+        <button class="btn play" id="play" title="播放/暂停">▶</button>
+        <button class="btn" id="next" title="下一章">⏭</button>
+        <button class="speed" id="speed">1.0×</button>
+      </div>
+    </div>
+  </div>
+
+  <ul class="list" id="list"></ul>
+  <div class="total" id="total"></div>
+
+  <footer>
+    本听读音频由 AI 基于原书解读性提炼稿生成 · 仅供个人学习交流 · 支持正版纸质书
+  </footer>
+</div>
+
+<audio id="audio" preload="metadata"></audio>
+
+<script>
+const BOOK = {
+  title: "软瘾",
+  tracks: [
+    {index:1,  title:"导论",                                   file:"audio/软瘾/01_导论.mp3",                                   duration:1146},
+    {index:2,  title:"第1章 你的生活应该更充实",               file:"audio/软瘾/02_第1章 你的生活应该更充实.mp3",             duration:1919},
+    {index:3,  title:"第2章 做出你的核心决定",                 file:"audio/软瘾/03_第2章 做出你的核心决定.mp3",               duration:1875},
+    {index:4,  title:"第3章 确定你的软瘾",                     file:"audio/软瘾/04_第3章 确定你的软瘾.mp3",                   duration:1067},
+    {index:5,  title:"第4章 关注你的思维",                     file:"audio/软瘾/05_第4章 关注你的思维.mp3",                   duration:955},
+    {index:6,  title:"第5章 破解你的软瘾密码",                 file:"audio/软瘾/06_第5章 破解你的软瘾密码.mp3",               duration:1043},
+    {index:7,  title:"第6章 满足你的精神需求",                 file:"audio/软瘾/07_第6章 满足你的精神需求.mp3",               duration:1775},
+    {index:8,  title:"第7章 构建你的愿景",                     file:"audio/软瘾/08_第7章 构建你的愿景.mp3",                   duration:1534},
+    {index:9,  title:"第8章 通过加减法来实现愿景",             file:"audio/软瘾/09_第8章 通过加减法来实现愿景.mp3",           duration:1843},
+    {index:10, title:"第9章 获得支持并负起责任",               file:"audio/软瘾/10_第9章 获得支持并负起责任.mp3",             duration:1769},
+    {index:11, title:"第10章 弯路与校正",                      file:"audio/软瘾/11_第10章 弯路与校正.mp3",                     duration:1651},
+    {index:12, title:"第11章 关于爱的四大真理",                file:"audio/软瘾/12_第11章 关于爱的四大真理.mp3",               duration:1002},
+    {index:13, title:"结语 对充实的伟大追求",                  file:"audio/软瘾/13_结语 对充实的伟大追求.mp3",                 duration:1949}
+  ]
+};
+
+const audio = document.getElementById('audio');
+const listEl = document.getElementById('list');
+const pTitle = document.getElementById('pTitle');
+const pStat  = document.getElementById('pStat');
+const fill   = document.getElementById('fill');
+const bar    = document.getElementById('bar');
+const curEl  = document.getElementById('cur');
+const durEl  = document.getElementById('dur');
+const playBtn= document.getElementById('play');
+const prevBtn= document.getElementById('prev');
+const nextBtn= document.getElementById('next');
+const speedBtn=document.getElementById('speed');
+let cur = -1;
+const speeds = [1, 1.25, 1.5, 0.75, 1];
+let si = 0;
+
+function fmt(s){ s = Math.max(0, Math.floor(s||0)); const m = Math.floor(s/60), x = s%60; return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+
+BOOK.tracks.forEach((t,i)=>{
+  const li = document.createElement('li');
+  li.className = 'ch'; li.dataset.i = i;
+  li.innerHTML = `<div class="idx">${String(t.index).padStart(2,'0')}</div>
+    <div class="meta"><div class="ct">${t.title}</div>
+      <div class="cd"><span class="eq"><i></i><i></i><i></i><i></i></span></div></div>
+    <div class="dur">${fmt(t.duration)}</div>`;
+  li.addEventListener('click', ()=> playTrack(i));
+  listEl.appendChild(li);
+});
+
+function render(){
+  document.querySelectorAll('li.ch').forEach((li,i)=>{
+    li.classList.toggle('active', i===cur);
+    li.classList.toggle('playing', i===cur && !audio.paused);
+  });
+}
+
+function playTrack(i){
+  if(i<0||i>=BOOK.tracks.length) return;
+  cur = i;
+  const t = BOOK.tracks[i];
+  audio.src = t.file;
+  audio.playbackRate = speeds[si];
+  pTitle.textContent = (String(t.index).padStart(2,'0')) + '. ' + t.title;
+  audio.play().then(()=>render()).catch(e=>console.warn(e));
+  render();
+}
+
+audio.onloadedmetadata = ()=>{ durEl.textContent = fmt(audio.duration); };
+audio.ontimeupdate = ()=>{
+  if(audio.duration){ fill.style.width = (audio.currentTime/audio.duration*100)+'%'; }
+  curEl.textContent = fmt(audio.currentTime);
+};
+audio.onplay  = ()=>{ playBtn.textContent='⏸'; render(); };
+audio.onpause = ()=>{ playBtn.textContent='▶'; render(); };
+audio.onended = ()=>{ if(cur+1<BOOK.tracks.length) playTrack(cur+1); else { playBtn.textContent='▶'; render(); } };
+
+playBtn.addEventListener('click', ()=>{
+  if(cur<0){ playTrack(0); return; }
+  audio.paused ? audio.play() : audio.pause();
+});
+prevBtn.addEventListener('click', ()=> playTrack(Math.max(0,cur-1)));
+nextBtn.addEventListener('click', ()=> playTrack(Math.min(BOOK.tracks.length-1,cur+1)));
+speedBtn.addEventListener('click', ()=>{ si=(si+1)%speeds.length; audio.playbackRate=speeds[si]; speedBtn.textContent=speeds[si].toFixed(2).replace(/0$/,'')+'×'; });
+bar.addEventListener('click', e=>{ if(audio.duration){ const r=bar.getBoundingClientRect(); audio.currentTime=(e.clientX-r.left)/r.width*audio.duration; } });
+
+document.getElementById('total').textContent =
+  '总时长约 ' + (BOOK.tracks.reduce((a,b)=>a+b.duration,0)/3600).toFixed(1) + ' 小时 · 13 章';
+</script>
+</body>
+</html>
